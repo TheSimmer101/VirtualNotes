@@ -16,15 +16,35 @@
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
-.bookPage 
-{
-  background-color: #dbc6a4;
+.mainContainer {
+  overflow-x: hidden; /* Prevents content from being clipped */
+   flex-wrap: wrap;
+  height: 800vh;
+   max-height: 400px; /* Limits container height */
+   height: auto; /* Allows flexible expansion */
+   overflow-y: auto; /* Enables vertical scrolling */
+   display: flex;
+   flex-wrap: wrap; /* Lets items wrap onto new rows */
+   align-items: flex-start; /* Prevents stretching */
+   gap: 15px 20px; /* Keeps spacing between rows and columns */
 }
 
-.bookCover
-{
-  background-color: #4f3406;
-}
+.noteCard {
+  flex-shrink: 0; /* Prevents shrinking */
+   min-width: 200px; /* Ensures a minimum width */
+   max-width: none;
+
+   outline: 2px dashed blue;
+   border-radius: 15px; 
+   flex-shrink: 0; 
+   overflow-wrap: break-word; 
+   display: flex; 
+   align-items: center;
+   max-width: 400px;
+   min-height: 200px;
+} 
+
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);

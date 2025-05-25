@@ -1,44 +1,82 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import app from "./firebase"; 
-import HTMLFlipBook from 'react-pageflip';
+// import app from "./firebase"; 
+// import { db, auth, google } from "./firebase.ts";
+import { app, db, auth, google } from "./firebase";
+
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { signInWithPopup, signOut, signInWithRedirect,onAuthStateChanged } from "firebase/auth";
+
 import './App.css'
 
 
-function BookContent({pageType, pageContent})
-{
-  if(pageType == "image")
-    return (
-      <img src = {pageContent}></img> )
-  else
-      return (
-        <p>{pageContent}</p>
-    )
+
+  const DeleteNote = () => {
+    
+      console.log("delete!");
+    } ;
   
-}
-function MyButton() {
+
+function NoteCard()
+{
   return (
-    <button>I'm a button</button>
-  );
+    <div className = "noteCard">
+      <h1>Title here</h1>
+      <h3>Text here</h3>
+      <button onClick= {DeleteNote}>Delete</button>
+    </div>
+  )
 }
+
 function App() {
-  const [count, setCount] = useState(0)
+
+    const [docRef, setDocRef] = useState(null);
+    const [user, setUser] = useState(null);
+    const [count, setCount] = useState(0)
+
+
+    
+
+
+const handleAuthClick = async () => {
+//const provider = new GoogleAuthProvider(); // Use 'GoogleAuthProvider' directly
+google.setCustomParameters({ prompt: 'select_account' });
+try {
+//await signInWithPopup(auth, google); // Use 'provider' directly here
+await signInWithRedirect(auth, google);
+} catch (error) {
+alert(error.message);
+}
+};
+
+//VERY ANNOYING ERROR in console: firebase_auth.js?v=0d44b53f:7547 Cross-Origin-Opener-Policy policy would block the window.close call.
+  // const handleAuthClick = () => {
+  //   if (user) {
+  //     signOut(auth).catch(console.error);
+  //     setUser(null);
+  //   } else {
+  //     signInWithPopup(auth, google)
+  //       .then((result) => setUser(result.user))
+  //       .catch(console.error);
+  //   }
+  // };
 
   return (
     <>
-     <HTMLFlipBook width={600} height={1000} showCover={true} size="stretch">
-            <div className = "bookCover">Book Title
-              <img src = {reactLogo}/>
-            </div>
-            <div className="bookPage">Page 1</div>
-            <div className="bookPage">Page 2</div>
-            <div className="bookPage">Page 3</div>
-            <div className="bookPage">Page 4</div>
-            <div className = "bookCover">End of Book</div>
-        </HTMLFlipBook>
-    <BookContent pageType = {"text"} pageContent = {"some words i wrote idk"} />
-    <MyButton />
+    <button onClick={handleAuthClick}>{user ? "sign out" : "sign in"}</button>
+    <div className = "mainContainer">
+      
+      <NoteCard></NoteCard>
+      <NoteCard></NoteCard>
+      <NoteCard></NoteCard>
+      <NoteCard></NoteCard>
+      <NoteCard></NoteCard>
+      <NoteCard></NoteCard>
+    </div>
+     
+    {/* <BookContent pageType = {"text"} pageContent = {"some words i wrote idk"} /> */}
+    {/* <MyButton />
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -58,7 +96,7 @@ function App() {
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
-      </p>
+      </p> */}
     </>
   )
 }
