@@ -39,7 +39,7 @@ function App() {
     
 
 
-const handleAuthClick = async () => {
+const handleAuthClick1 = async () => {
 //const provider = new GoogleAuthProvider(); // Use 'GoogleAuthProvider' directly
 google.setCustomParameters({ prompt: 'select_account' });
 try {
@@ -51,20 +51,20 @@ alert(error.message);
 };
 
 //VERY ANNOYING ERROR in console: firebase_auth.js?v=0d44b53f:7547 Cross-Origin-Opener-Policy policy would block the window.close call.
-  // const handleAuthClick = () => {
-  //   if (user) {
-  //     signOut(auth).catch(console.error);
-  //     setUser(null);
-  //   } else {
-  //     signInWithPopup(auth, google)
-  //       .then((result) => setUser(result.user))
-  //       .catch(console.error);
-  //   }
-  // };
+  const handleAuthClick = () => {
+    if (user) {
+      signOut(auth).catch(console.error);
+      setUser(null);
+    } else {
+      signInWithPopup(auth, google)
+        .then((result) => setUser(result.user))
+        .catch(console.error);
+    }
+  };
 
   return (
     <>
-    <button onClick={handleAuthClick}>{user ? "sign out" : "sign in"}</button>
+    <button onClick={handleAuthClick1}>{user ? "sign out" : "sign in"}</button>
     <div className = "mainContainer">
       
       <NoteCard></NoteCard>
