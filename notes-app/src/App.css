@@ -17,6 +17,8 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 .mainContainer {
+  width: 100vh;
+  height: 100vw;
   overflow-x: hidden; /* Prevents content from being clipped */
    flex-wrap: wrap;
   height: 800vh;
@@ -30,18 +32,15 @@
 }
 
 .noteCard {
-  flex-shrink: 0; /* Prevents shrinking */
-   min-width: 200px; /* Ensures a minimum width */
-   max-width: none;
-
-   outline: 2px dashed blue;
-   border-radius: 15px; 
-   flex-shrink: 0; 
-   overflow-wrap: break-word; 
-   display: flex; 
-   align-items: center;
-   max-width: 400px;
-   min-height: 200px;
+display: flex;
+  flex-direction: column; /* Stacks items vertically */
+  align-items: center; /* Centers items horizontally */
+  justify-content: center; /* Centers items vertically */
+  width: 200px; /* Set width */
+  height: 300px; /* Set height */
+  border: 2px solid black;
+  padding: 10px;
+  background-color: #f0f0f0;
 } 
 
 

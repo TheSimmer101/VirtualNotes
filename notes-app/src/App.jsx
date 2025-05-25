@@ -1,12 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 // import app from "./firebase"; 
 // import { db, auth, google } from "./firebase.ts";
 import { app, db, auth, google } from "./firebase";
 
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { signInWithPopup, signOut, signInWithRedirect,onAuthStateChanged } from "firebase/auth";
+import { doc, getDoc, setDoc, updateDoc, addDoc, collection } from "firebase/firestore";
+import { signInWithPopup, signOut, signInWithRedirect,getRedirectResult, onAuthStateChanged, } from "firebase/auth";
 
 import './App.css'
 
@@ -37,20 +37,67 @@ function App() {
 
 
     
+//   useEffect(() => {
+//     getRedirectResult(auth)
+//       .then((result) => {
+//         if (result?.user) {
+//           setUser(result.user); // ✅ Updates user state
+//         }
+//       })
+//       .catch(console.error);
 
+//     // Also listen for authentication state changes
+//     const unsubscribe = onAuthStateChanged(auth, (user) => {
+//       setUser(user);
+//     });
 
-const handleAuthClick1 = async () => {
-//const provider = new GoogleAuthProvider(); // Use 'GoogleAuthProvider' directly
-google.setCustomParameters({ prompt: 'select_account' });
-try {
-//await signInWithPopup(auth, google); // Use 'provider' directly here
-await signInWithRedirect(auth, google);
-} catch (error) {
-alert(error.message);
+//     return () => unsubscribe(); // Cleanup listener on unmount
+//   }, []);
+  
+//  useEffect(() => {
+//     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+//       setUser(currentUser);
+//       console.log('User:', currentUser ? (currentUser.displayName || currentUser.email) : 'None');
+//     });
+
+//     return () => unsubscribe();
+//   }, []);
+// const handleAuthClick1 = async () => {
+// if (user) {
+//     // If signed in, sign them out
+//     try {
+//       await signOut(auth);
+//       console.log("User signed out successfully!");
+//     } catch (error) {
+//       console.error("Error signing out:", error.message);
+//       alert(error.message);
+//     }
+//   } else {
+//     // If not signed in, initiate sign-in with redirect
+//     google.setCustomParameters({ prompt: 'select_account' });
+//     try {
+//       await signInWithRedirect(auth, google);
+//     } catch (error) {
+//       console.error("Error initiating sign-in:", error.message);
+//       alert(error.message);
+//     }
+//   }
+// };
+
+const addNote = () =>
+{
+  addDoc(collection(db,"notes"),
+  {
+    title: "my note title",
+    noteText: "lorem ipsum blah blah blah"
+  });
+
+  console.log("you want to add a note!");
 }
-};
 
-//VERY ANNOYING ERROR in console: firebase_auth.js?v=0d44b53f:7547 Cross-Origin-Opener-Policy policy would block the window.close call.
+
+//Annoying error in console sometimes, idk how to get rid of it: firebase_auth.js?v=0d44b53f:7547 Cross-Origin-Opener-Policy policy would block the window.close call.
+
   const handleAuthClick = () => {
     if (user) {
       signOut(auth).catch(console.error);
@@ -62,9 +109,12 @@ alert(error.message);
     }
   };
 
+  if(user)
+    console.log("signed in")
   return (
     <>
-    <button onClick={handleAuthClick1}>{user ? "sign out" : "sign in"}</button>
+    <button onClick={handleAuthClick}>{user ? "sign out" : "sign in"}</button>
+    <button onClick ={addNote}>Add a Note</button>
     <div className = "mainContainer">
       
       <NoteCard></NoteCard>
